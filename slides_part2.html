@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocular — Slides 09–16</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;color:#fff;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;width:100vw;height:100vh}
+  .deck{width:100%;height:100%;position:relative}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:52px 64px 56px;background:#000}
+  .slide.active{display:flex}
+  .label{font-size:11px;letter-spacing:.22em;color:#555;text-transform:uppercase;margin-bottom:28px}
+  h2{font-size:clamp(1.4rem,3.2vw,2.4rem);font-weight:300;letter-spacing:-.01em;line-height:1.15;margin-bottom:8px}
+  .subtitle{font-size:.95rem;color:#777;font-weight:300;margin-bottom:12px}
+  .cyan{color:#00e5cc} .green{color:#4ade80} .amber{color:#fbbf24} .purple{color:#c084fc} .red{color:#f87171} .blue{color:#60a5fa}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;flex:1;align-items:start;margin-top:8px}
+  .two-col-3{display:grid;grid-template-columns:3fr 2fr;gap:48px;flex:1;align-items:start;margin-top:8px}
+  .divider{width:48px;height:2px;background:#1e1e1e;margin:14px 0}
+  .badge{background:#111;border:1px solid #222;border-radius:4px;padding:5px 12px;font-size:.75rem;color:#aaa;letter-spacing:.06em}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+
+  /* principle cards */
+  .principle-list{list-style:none;margin-top:12px}
+  .principle-list li{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #0e0e0e;align-items:flex-start}
+  .principle-list li:last-child{border-bottom:none}
+  .p-badge{width:32px;height:32px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+  .p-badge.ok{background:#0a1a0a;color:#4ade80;border:1px solid #1a3a1a}
+  .p-badge.warn{background:#1a1400;color:#fbbf24;border:1px solid #3a2a00}
+  .p-content h4{font-size:.82rem;font-weight:600;margin-bottom:3px}
+  .p-content p{font-size:.8rem;color:#777;line-height:1.5}
+
+  /* 4-step */
+  .step-flow{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+  .step-row{display:flex;gap:14px;align-items:flex-start;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;padding:14px 16px}
+  .step-row.highlight{background:#0a150a;border-color:#4ade8044}
+  .s-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;border:1px solid #333;color:#777}
+  .s-num.act{border-color:#00e5cc;color:#00e5cc;background:#0a1a1a}
+  .s-body h4{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+  .s-body p{font-size:.78rem;color:#777;line-height:1.5}
+
+  /* comparison table */
+  .cmp-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.8rem}
+  .cmp-table th{text-align:left;padding:9px 12px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#555;border-bottom:1px solid #1a1a1a}
+  .cmp-table td{padding:10px 12px;border-bottom:1px solid #0e0e0e;color:#888;vertical-align:top;line-height:1.4}
+  .cmp-table td:first-child{color:#ddd;width:28%}
+  .cmp-table td:nth-child(2){color:#60a5fa}
+  .cmp-table td:nth-child(3){color:#666}
+
+  /* trends */
+  .trend-list{list-style:none;margin-top:16px}
+  .trend-list li{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+  .trend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+  .trend-content h4{font-size:.84rem;font-weight:600;margin-bottom:3px}
+  .trend-content p{font-size:.8rem;color:#777;line-height:1.5}
+  .where-box{background:#0a100a;border:1px solid #1a2a1a;border-radius:6px;padding:14px 18px;margin-top:16px;font-size:.82rem;color:#888;line-height:1.5}
+
+  /* career skills */
+  .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+  .skill-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;padding:18px}
+  .skill-card h3{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+  .skill-card ul{list-style:none}
+  .skill-card ul li{font-size:.8rem;color:#888;padding:5px 0;border-bottom:1px solid #0e0e0e;line-height:1.4}
+  .skill-card ul li:last-child{border-bottom:none}
+  .era-bar{background:#0a0a12;border:1px solid #1a1a33;border-radius:6px;padding:14px 18px;margin-top:14px;font-size:.83rem;color:#aab;line-height:1.5}
+
+  /* sustainability */
+  .sus-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;margin-top:12px;align-items:start}
+  .sus-card{background:#0a0a0a;border-radius:6px;padding:20px}
+  .sus-card.green-b{border:1px solid #1a3a1a}
+  .sus-card.blue-b{border:1px solid #1a1a3a}
+  .sus-card h3{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+  .sus-card ul{list-style:none}
+  .sus-card ul li{font-size:.8rem;color:#888;padding:7px 0;border-bottom:1px solid #0e0e0e;line-height:1.5}
+  .sus-card ul li:last-child{border-bottom:none}
+
+  /* legal */
+  .legal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;margin-top:16px;align-items:start}
+  .legal-card{background:#0a0a0a;border-top:2px solid;border-radius:4px;padding:20px 16px}
+  .legal-card .icon{font-size:1.5rem;margin-bottom:10px}
+  .legal-card h3{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+  .legal-card p{font-size:.8rem;color:#777;line-height:1.55}
+
+  /* IPR */
+  .lic-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.8rem}
+  .lic-table td{padding:8px 10px;border-bottom:1px solid #0e0e0e;color:#888}
+  .lic-table td:first-child{color:#ddd;width:38%}
+  .lic-table td:last-child{color:#4ade80}
+  .gdpr-bar{background:#0a0a12;border:1px solid #1a1a33;border-radius:6px;padding:13px 18px;margin-top:14px;font-size:.82rem;color:#aab;line-height:1.5}
+
+  /* bottom bar */
+  .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:#000;border-top:1px solid #0e0e0e;z-index:100}
+  .slide-counter{font-size:.75rem;letter-spacing:.14em;color:#444}
+  .dots{display:flex;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;border:1px solid #333;cursor:pointer;transition:background .2s}
+  .dot.on{background:#fff;border-color:#fff}
+  .nav{display:flex;gap:8px}
+  .nav button{width:40px;height:40px;border:1px solid #222;background:transparent;color:#888;font-size:1rem;cursor:pointer;border-radius:2px;transition:all .15s}
+  .nav button:hover{background:#111;color:#fff}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ════ SLIDE 9 — ACM/IEEE ════ -->
+<div class="slide active" data-label="ACM / IEEE CODE OF ETHICS">
+  <div class="label">ACM / IEEE CODE OF ETHICS</div>
+  <h2>ACM / IEEE Principles in Our Project</h2>
+  <p class="subtitle">How Ocular aligns with established professional codes</p>
+
+  <div class="two-col-3" style="flex:1;margin-top:8px">
+    <div>
+      <p style="font-size:.72rem;letter-spacing:.16em;color:#4ade80;text-transform:uppercase;margin-bottom:10px">Principles Followed</p>
+      <ul class="principle-list">
+        <li>
+          <div class="p-badge ok">✓</div>
+          <div class="p-content">
+            <h4 class="green">ACM 1.3 — Honest &amp; Trustworthy</h4>
+            <p>Confidence scores displayed on every result. Fallback output explicitly labelled "rule-based" so users know the AI was unavailable.</p>
+          </div>
+        </li>
+        <li>
+          <div class="p-badge ok">✓</div>
+          <div class="p-content">
+            <h4 class="green">ACM 2.2 — High Quality Work</h4>
+            <p>Modular, single-responsibility agent architecture. Each agent tested independently with graceful error handling.</p>
+          </div>
+        </li>
+        <li>
+          <div class="p-badge ok">✓</div>
+          <div class="p-content">
+            <h4 class="green">IEEE 4 — Treating Persons Fairly</h4>
+            <p>Accessible UI with no bias toward document type. Works for printed and handwritten documents equally.</p>
+          </div>
+        </li>
+      </ul>
+
+      <p style="font-size:.72rem;letter-spacing:.16em;color:#fbbf24;text-transform:uppercase;margin:16px 0 8px">Principle at Risk</p>
+      <ul class="principle-list">
+        <li>
+          <div class="p-badge warn">⚠</div>
+          <div class="p-content">
+            <h4 class="amber">ACM 1.6 — Respect Privacy</h4>
+            <p>Images may contain private data. Phase 2 processes locally but escalation to GPT-4o API introduces a third-party data path that must be managed in Phase 3.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="180" height="220" viewBox="0 0 180 220">
+        <text x="90" y="18" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">ETHICS SCORE</text>
+        <!-- gauge arc -->
+        <circle cx="90" cy="110" r="70" fill="none" stroke="#0e0e0e" stroke-width="12"/>
+        <circle cx="90" cy="110" r="70" fill="none" stroke="#4ade80" stroke-width="12" stroke-dasharray="175 264" stroke-linecap="round" transform="rotate(-90 90 110)" opacity=".7"/>
+        <text x="90" y="105" text-anchor="middle" fill="#fff" font-size="22" font-weight="300" font-family="Segoe UI">3/4</text>
+        <text x="90" y="122" text-anchor="middle" fill="#555" font-size="8.5" letter-spacing="1" font-family="Segoe UI">PRINCIPLES MET</text>
+        <text x="90" y="140" text-anchor="middle" fill="#fbbf24" font-size="8" letter-spacing="1" font-family="Segoe UI">1 REQUIRES ATTENTION</text>
+        <!-- legend -->
+        <rect x="28" y="166" width="10" height="10" fill="#4ade8066"/>
+        <text x="42" y="175" fill="#666" font-size="8" font-family="Segoe UI">Followed (3)</text>
+        <rect x="28" y="184" width="10" height="10" fill="#fbbf2466"/>
+        <text x="42" y="193" fill="#666" font-size="8" font-family="Segoe UI">At Risk (1)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 10 — 4-STEP ETHICAL PROCESS ════ -->
+<div class="slide" data-label="ETHICAL DECISION PROCESS">
+  <div class="label">ETHICAL DECISION PROCESS — 4-STEP MODEL</div>
+  <h2>4-Step Ethical Decision Process — Applied</h2>
+  <p class="subtitle">Applied to Ocular's most significant risk: user image privacy</p>
+
+  <div class="two-col" style="flex:1;margin-top:8px">
+    <div class="step-flow">
+      <div class="step-row">
+        <div class="s-num act">1</div>
+        <div class="s-body">
+          <h4 class="cyan">Identify the Issue</h4>
+          <p>User images uploaded to Ocular may contain private or confidential content — medical records, legal documents, financial data.</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="s-num act">2</div>
+        <div class="s-body">
+          <h4 class="cyan">Analyze Stakeholders</h4>
+          <p><span class="amber">Users</span> — privacy at risk &nbsp;|&nbsp; <span class="amber">Developers</span> — liability &nbsp;|&nbsp; <span class="amber">OpenAI</span> — API recipient of image data</p>
+        </div>
+      </div>
+      <div class="step-row">
+        <div class="s-num act">3</div>
+        <div class="s-body">
+          <h4 class="cyan">Evaluate Alternatives</h4>
+          <p>A) Send full image to GPT-4o — convenient, less private<br>B) Local OCR only — private, but less intelligent<br><span class="green">C) Hybrid — local OCR first, API for structure only ✓</span></p>
+        </div>
+      </div>
+      <div class="step-row highlight">
+        <div class="s-num act">4</div>
+        <div class="s-body">
+          <h4 class="green">Justified Decision ✓</h4>
+          <p>Hybrid approach chosen. Images encoded in-memory, never saved to disk. API key protected via .env. Risk minimised while retaining AI intelligence.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="180" height="280" viewBox="0 0 180 280">
+        <text x="90" y="16" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">CYBERSECURITY VIEW</text>
+        <rect x="20" y="28" width="140" height="36" rx="4" fill="#0a0a1a" stroke="#60a5fa33"/>
+        <text x="90" y="50" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Segoe UI">API Key in .env file</text>
+        <line x1="90" y1="64" x2="90" y2="76" stroke="#333" stroke-width="1"/>
+        <rect x="20" y="76" width="140" height="36" rx="4" fill="#0a1a0a" stroke="#4ade8033"/>
+        <text x="90" y="98" text-anchor="middle" fill="#4ade80" font-size="9" font-family="Segoe UI">Never in version control</text>
+        <line x1="90" y1="112" x2="90" y2="124" stroke="#333" stroke-width="1"/>
+        <rect x="20" y="124" width="140" height="36" rx="4" fill="#0a0a1a" stroke="#60a5fa33"/>
+        <text x="90" y="146" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Segoe UI">Image encoded in-memory</text>
+        <line x1="90" y1="160" x2="90" y2="172" stroke="#333" stroke-width="1"/>
+        <rect x="20" y="172" width="140" height="36" rx="4" fill="#0a1a0a" stroke="#4ade8033"/>
+        <text x="90" y="194" text-anchor="middle" fill="#4ade80" font-size="9" font-family="Segoe UI">Not saved to disk</text>
+        <line x1="90" y1="208" x2="90" y2="220" stroke="#333" stroke-width="1"/>
+        <rect x="30" y="220" width="120" height="36" rx="4" fill="#0a1a0a" stroke="#4ade8066"/>
+        <text x="90" y="242" text-anchor="middle" fill="#4ade80" font-size="9.5" font-weight="600" font-family="Segoe UI">Risk Minimised ✓</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 11 — INDUSTRY PRACTICES ════ -->
+<div class="slide" data-label="SOFTWARE DEVELOPMENT &amp; INDUSTRY PRACTICES">
+  <div class="label">SOFTWARE DEVELOPMENT &amp; INDUSTRY PRACTICES</div>
+  <h2>Student Project vs. Software House</h2>
+  <p class="subtitle">How our workflow compares — and what we can improve</p>
+
+  <div style="flex:1;margin-top:8px">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>Student — Us</th>
+          <th>Software House</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Communication</td><td>WhatsApp / in-person</td><td>Jira, Slack, daily standups</td></tr>
+        <tr><td>Version Control</td><td>Git (local only)</td><td>GitHub + PRs + CI/CD pipeline</td></tr>
+        <tr><td>Code Review</td><td>Self-review</td><td>Mandatory peer review</td></tr>
+        <tr><td>AI Ethics</td><td>Considered manually</td><td>Formal AI audit process</td></tr>
+        <tr><td>Documentation</td><td>This presentation</td><td>Technical specs, wikis, ADRs</td></tr>
+        <tr><td>Testing</td><td>Manual smoke tests</td><td>Automated unit + integration tests</td></tr>
+      </tbody>
+    </table>
+
+    <div style="background:#0a0a12;border:1px solid #1a1a33;border-radius:6px;padding:14px 20px;margin-top:18px">
+      <p style="font-size:.83rem;color:#888;line-height:1.55">
+        <span class="blue">Lesson:</span> Adopting even basic version control with branching and peer review would
+        significantly improve code reliability and ethical accountability. The gap is not technology —
+        it is discipline and process.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 12 — TRENDS IN IT ════ -->
+<div class="slide" data-label="TRENDS IN IT &amp; AGENTIC SYSTEMS">
+  <div class="label">TRENDS IN IT &amp; AGENTIC SYSTEMS</div>
+  <h2>The Industry Is Moving Toward<br>Autonomous AI Agents</h2>
+
+  <div class="two-col-3" style="flex:1;margin-top:12px">
+    <div>
+      <ul class="trend-list">
+        <li>
+          <div class="trend-dot" style="background:#00e5cc"></div>
+          <div class="trend-content">
+            <h4 class="cyan">Rise of AI Agents</h4>
+            <p>From tools that respond to commands → agents that perceive their environment, decide what to do, and act.</p>
+          </div>
+        </li>
+        <li>
+          <div class="trend-dot" style="background:#4ade80"></div>
+          <div class="trend-content">
+            <h4 class="green">Autonomous Pipelines</h4>
+            <p>GPT-4o, LangChain, AutoGPT — modern agents manage multi-step tasks without step-by-step human instruction.</p>
+          </div>
+        </li>
+        <li>
+          <div class="trend-dot" style="background:#fbbf24"></div>
+          <div class="trend-content">
+            <h4 class="amber">Industry Adoption</h4>
+            <p>Microsoft Copilot, GitHub Copilot, Google Duet AI — agentic systems are now mainstream developer tools.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="where-box">
+        <span class="cyan">Where Ocular Fits:</span> An early-stage agentic system whose
+        Observe → Interpret → Decide → Act → Learn cycle exactly mirrors
+        modern AI agent architectures being deployed at industry scale.
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="180" height="240" viewBox="0 0 180 240">
+        <text x="90" y="16" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">ADOPTION CURVE</text>
+        <!-- S-curve -->
+        <path d="M 20 200 C 40 200 60 180 80 140 S 120 60 160 30" fill="none" stroke="#00e5cc44" stroke-width="2"/>
+        <!-- milestone dots -->
+        <circle cx="50" cy="192" r="5" fill="#333"/>
+        <text x="58" y="195" fill="#555" font-size="7.5" font-family="Segoe UI">Rule-based tools</text>
+        <circle cx="90" cy="140" r="5" fill="#60a5fa"/>
+        <text x="98" y="143" fill="#60a5fa" font-size="7.5" font-family="Segoe UI">ML Models</text>
+        <circle cx="120" cy="90" r="5" fill="#c084fc"/>
+        <text x="128" y="93" fill="#c084fc" font-size="7.5" font-family="Segoe UI">LLM APIs</text>
+        <circle cx="148" cy="48" r="7" fill="#00e5cc"/>
+        <text x="156" y="44" fill="#00e5cc" font-size="7.5" font-family="Segoe UI">Agents</text>
+        <!-- Ocular marker -->
+        <circle cx="136" cy="64" r="6" fill="#4ade8044" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="90" y="218" text-anchor="middle" fill="#4ade80" font-size="8" font-family="Segoe UI">← Ocular is here</text>
+        <line x1="136" y1="70" x2="110" y2="210" stroke="#4ade8033" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 13 — CAREER ════ -->
+<div class="slide" data-label="HOW THIS PROJECT HELPS YOUR CAREER">
+  <div class="label">HOW THIS PROJECT HELPS YOUR CAREER</div>
+  <h2>What Ocular Built in Us</h2>
+  <p class="subtitle">Skills acquired that translate directly to industry roles</p>
+
+  <div style="flex:1;margin-top:8px">
+    <div class="skill-grid">
+      <div class="skill-card" style="border-top:2px solid #00e5cc">
+        <h3 class="cyan">Technical Skills</h3>
+        <ul>
+          <li>Python · OpenCV · Tesseract OCR</li>
+          <li>OpenAI GPT-4o Vision API integration</li>
+          <li>Agent-based software architecture</li>
+          <li>Document generation with python-docx</li>
+          <li>SQLite persistent memory management</li>
+        </ul>
+      </div>
+      <div class="skill-card" style="border-top:2px solid #c084fc">
+        <h3 class="purple">Professional Skills</h3>
+        <ul>
+          <li>Ethical decision making under constraints</li>
+          <li>Balancing speed vs. quality trade-offs</li>
+          <li>Writing explainable, auditable systems</li>
+          <li>Designing fallback-safe pipelines</li>
+          <li>Human-in-the-loop system design</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="era-bar" style="margin-top:14px">
+      <span class="blue">In the AI Era:</span> Developers who understand both AI capabilities
+      <em>and</em> ethical responsibility are the most valuable — and the most employable.
+      Ocular gave us both.
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 14 — SUSTAINABILITY ════ -->
+<div class="slide" data-label="VIRTUAL WORK &amp; SUSTAINABILITY">
+  <div class="label">VIRTUAL WORK &amp; SUSTAINABILITY</div>
+  <h2>Remote Collaboration &amp; Green Computing</h2>
+
+  <div class="sus-grid">
+    <div class="sus-card blue-b">
+      <h3 class="blue">Remote Collaboration</h3>
+      <ul>
+        <li>Team coordination via shared codebase and messaging apps</li>
+        <li>Challenge: code conflicts and communication gaps across schedules</li>
+        <li>Lesson: structured commits + clear task ownership are essential</li>
+        <li>Next step: move to GitHub with branch-per-feature workflow</li>
+      </ul>
+    </div>
+    <div class="sus-card green-b">
+      <h3 class="green">Green Computing in Ocular</h3>
+      <ul>
+        <li>Local preprocessing (OpenCV) runs without any API call</li>
+        <li>GPT-4o Vision is only invoked when local OCR confidence is low</li>
+        <li>No permanent cloud storage of user documents</li>
+        <li>Fewer API calls = less server energy = lower carbon footprint</li>
+      </ul>
+      <div style="margin-top:12px;background:#0a150a;border:1px solid #1a3a1a;border-radius:4px;padding:10px 14px;font-size:.78rem;color:#4ade80">
+        Result: The hybrid intelligence tier directly reduces energy consumption.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 15 — LEGAL ════ -->
+<div class="slide" data-label="LEGAL ASPECTS OF COMPUTING">
+  <div class="label">LEGAL ASPECTS OF COMPUTING</div>
+  <h2>Our Legal Responsibilities as Developers</h2>
+  <p class="subtitle">Building Ocular means accepting legal obligations — not just technical ones</p>
+
+  <div class="legal-grid">
+    <div class="legal-card" style="border-color:#60a5fa">
+      <div class="icon">📄</div>
+      <h3 class="blue">Data Protection</h3>
+      <p>User images are processed locally. Not stored or transmitted without explicit need. This is our legal and moral baseline — not optional.</p>
+    </div>
+    <div class="legal-card" style="border-color:#c084fc">
+      <div class="icon">👤</div>
+      <h3 class="purple">User Rights</h3>
+      <p>Users must be able to understand how the system processes their documents and must have a clear way to delete any retained data.</p>
+    </div>
+    <div class="legal-card" style="border-color:#fbbf24">
+      <div class="icon">⚖️</div>
+      <h3 class="amber">Accuracy Liability</h3>
+      <p>If OCR output is wrong and a user relies on it for official purposes, the tool's limitations must be clearly disclosed in the interface.</p>
+    </div>
+  </div>
+
+  <div style="background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;padding:14px 20px;margin-top:16px;font-size:.82rem;color:#777;line-height:1.5">
+    Ocular currently displays a confidence score and labels fallback results.
+    This is our first step toward transparency compliance — further legal review
+    would be required before any commercial deployment.
+  </div>
+</div>
+
+<!-- ════ SLIDE 16 — IPR ════ -->
+<div class="slide" data-label="INTELLECTUAL PROPERTY RIGHTS">
+  <div class="label">INTELLECTUAL PROPERTY RIGHTS (IPR)</div>
+  <h2>IPR, Licensing &amp; Data Protection</h2>
+
+  <div class="two-col" style="flex:1;margin-top:8px">
+    <div>
+      <p style="font-size:.72rem;letter-spacing:.16em;color:#555;text-transform:uppercase;margin-bottom:8px">Ownership</p>
+      <p style="font-size:.85rem;color:#aaa;line-height:1.6;margin-bottom:16px">
+        Ocular source code is owned by the development team.
+        Built on open-source libraries — their individual licenses apply and must be respected.
+      </p>
+
+      <p style="font-size:.72rem;letter-spacing:.16em;color:#555;text-transform:uppercase;margin-bottom:8px">Libraries &amp; Licenses</p>
+      <table class="lic-table">
+        <tr><td>Tesseract OCR</td><td>Apache 2.0 — attribution required</td></tr>
+        <tr><td>python-docx</td><td>MIT License — free to use/modify</td></tr>
+        <tr><td>OpenCV</td><td>Apache 2.0 — attribution required</td></tr>
+        <tr><td>OpenAI API</td><td>Commercial terms apply</td></tr>
+        <tr><td>Flask</td><td>BSD 3-Clause License</td></tr>
+      </table>
+
+      <div style="background:#0a100a;border:1px solid #1a2a1a;border-radius:6px;padding:11px 16px;margin-top:14px;font-size:.8rem;color:#888">
+        <span class="green">Licensing Recommendation:</span> MIT License for academic/open release.
+        Commercial release requires full legal review of all dependencies.
+      </div>
+    </div>
+
+    <div>
+      <div class="gdpr-bar">
+        <p style="font-size:.72rem;letter-spacing:.16em;color:#60a5fa;text-transform:uppercase;margin-bottom:8px">GDPR Mindset Applied</p>
+        <ul style="list-style:none;font-size:.82rem;color:#888;line-height:1.8">
+          <li>✓ Data minimisation — only what is needed is processed</li>
+          <li>✓ No unnecessary retention — images not saved</li>
+          <li>✓ Transparent processing — confidence scores shown</li>
+          <li>✓ User control — user initiates every action</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:14px;display:flex;align-items:center;justify-content:center">
+        <svg width="140" height="120" viewBox="0 0 140 120">
+          <polygon points="70,10 130,45 130,90 70,115 10,90 10,45" fill="#0a0a1a" stroke="#60a5fa33" stroke-width="1.5"/>
+          <polygon points="70,25 115,50 115,85 70,100 25,85 25,50" fill="#0a0a12" stroke="#60a5fa22" stroke-width="1"/>
+          <text x="70" y="58" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="600" font-family="Segoe UI">GDPR</text>
+          <text x="70" y="72" text-anchor="middle" fill="#555" font-size="7.5" letter-spacing="1.5" font-family="Segoe UI">COMPLIANT DESIGN</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="bottom-bar">
+  <div class="slide-counter" id="counter">09 / 16</div>
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <button onclick="move(-1)">←</button>
+    <button onclick="move(1)">→</button>
+  </div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dots');
+const counter=document.getElementById('counter');
+let cur=0;
+const BASE=9;
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>go(i);
+  dotsEl.appendChild(d);
+});
+function go(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('on');
+  cur=(n+slides.length)%slides.length;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('on');
+  counter.textContent=String(BASE+cur).padStart(2,'0')+' / 32';
+}
+function move(d){go(cur+d)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')move(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')move(-1);
+});
+</script>
+</body>
+</html>

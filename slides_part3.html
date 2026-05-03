@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocular — Slides 17–24</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#000;color:#fff;font-family:'Segoe UI',system-ui,sans-serif;overflow:hidden;width:100vw;height:100vh}
+  .deck{width:100%;height:100%;position:relative}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;padding:52px 64px 56px;background:#000}
+  .slide.active{display:flex}
+  .label{font-size:11px;letter-spacing:.22em;color:#555;text-transform:uppercase;margin-bottom:28px}
+  h2{font-size:clamp(1.4rem,3.2vw,2.4rem);font-weight:300;letter-spacing:-.01em;line-height:1.15;margin-bottom:8px}
+  .subtitle{font-size:.95rem;color:#777;font-weight:300;margin-bottom:12px}
+  .cyan{color:#00e5cc} .green{color:#4ade80} .amber{color:#fbbf24} .purple{color:#c084fc} .red{color:#f87171} .blue{color:#60a5fa}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:40px;flex:1;align-items:start;margin-top:8px}
+  .two-col-3{display:grid;grid-template-columns:3fr 2fr;gap:48px;flex:1;align-items:start;margin-top:8px}
+  .divider{width:48px;height:2px;background:#1e1e1e;margin:14px 0}
+
+  /* risk grid */
+  .risk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;flex:1;margin-top:12px;align-items:stretch}
+  .risk-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:8px}
+  .risk-card .r-label{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase}
+  .risk-card h3{font-size:.88rem;font-weight:500}
+  .risk-card p{font-size:.8rem;color:#777;line-height:1.5}
+  .risk-card .mitigation{font-size:.75rem;padding:8px 10px;border-radius:4px;margin-top:auto;line-height:1.5}
+  .mit-c{background:#0a1a1a;border:1px solid #0e3030;color:#00e5cc}
+  .mit-g{background:#0a1a0a;border:1px solid #1a3a1a;color:#4ade80}
+
+  /* agentic properties */
+  .prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;flex:1;margin-top:12px}
+  .prop-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;padding:20px 18px}
+  .prop-card .p-icon{font-size:1.6rem;margin-bottom:10px}
+  .prop-card h3{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+  .prop-card p{font-size:.8rem;color:#777;line-height:1.55}
+
+  /* gap table */
+  .gap-table{width:100%;border-collapse:collapse;font-size:.8rem}
+  .gap-table th{text-align:left;padding:8px 12px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#555;border-bottom:1px solid #1a1a1a}
+  .gap-table td{padding:9px 12px;border-bottom:1px solid #0e0e0e;vertical-align:top;line-height:1.4}
+  .gap-table td:first-child{color:#ddd;width:35%}
+  .gap-table td:nth-child(2){color:#f87171}
+  .gap-table td:nth-child(3){color:#4ade80}
+  .cross{color:#f87171}
+  .tick{color:#4ade80}
+
+  /* before/after */
+  .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a1a1a;border-radius:8px;overflow:hidden;flex:1;margin-top:12px}
+  .ba-col{background:#0a0a0a;padding:22px 18px}
+  .ba-col h3{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+  .ba-col ul{list-style:none}
+  .ba-col ul li{font-size:.82rem;padding:8px 0;border-bottom:1px solid #0e0e0e;color:#777;line-height:1.4}
+  .ba-col ul li:last-child{border-bottom:none}
+  .arrow-center{display:flex;align-items:center;justify-content:center;background:#050505;padding:0 10px;font-size:1.4rem;color:#333}
+
+  /* pipeline flow */
+  .pipeline{display:flex;flex-direction:column;gap:0;margin-top:12px}
+  .pipe-node{display:flex;align-items:center;gap:16px;padding:12px 16px;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;margin-bottom:4px}
+  .pipe-node .pn-icon{font-size:1.2rem;flex-shrink:0}
+  .pipe-node .pn-body h4{font-size:.82rem;font-weight:600;margin-bottom:2px}
+  .pipe-node .pn-body p{font-size:.78rem;color:#666;line-height:1.4}
+  .pipe-arrow{text-align:center;color:#333;font-size:.7rem;padding:1px 0;letter-spacing:.06em}
+
+  /* agent type */
+  .type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
+  .type-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:6px;padding:18px}
+  .type-card .tc-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .type-card h3{font-size:.82rem;font-weight:600}
+  .chosen-tag{font-size:.65rem;background:#0a1a0a;border:1px solid #1a3a1a;color:#4ade80;padding:2px 8px;border-radius:3px;letter-spacing:.1em}
+  .rej-tag{font-size:.65rem;background:#1a0a0a;border:1px solid #3a1a1a;color:#f87171;padding:2px 8px;border-radius:3px;letter-spacing:.1em}
+  .type-card p{font-size:.78rem;color:#666;line-height:1.5}
+
+  /* contracts */
+  .contract-list{list-style:none;margin-top:12px}
+  .contract-list li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid #0e0e0e;align-items:flex-start}
+  .contract-list li:last-child{border-bottom:none}
+  .c-icon{width:30px;height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0}
+  .c-body h4{font-size:.82rem;font-weight:600;margin-bottom:3px}
+  .c-body p{font-size:.78rem;color:#666;line-height:1.4}
+
+  /* bottom bar */
+  .bottom-bar{position:fixed;bottom:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:#000;border-top:1px solid #0e0e0e;z-index:100}
+  .slide-counter{font-size:.75rem;letter-spacing:.14em;color:#444}
+  .dots{display:flex;gap:8px}
+  .dot{width:8px;height:8px;border-radius:50%;border:1px solid #333;cursor:pointer;transition:background .2s}
+  .dot.on{background:#fff;border-color:#fff}
+  .nav{display:flex;gap:8px}
+  .nav button{width:40px;height:40px;border:1px solid #222;background:transparent;color:#888;font-size:1rem;cursor:pointer;border-radius:2px;transition:all .15s}
+  .nav button:hover{background:#111;color:#fff}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ════ SLIDE 17 — COMPUTER CRIMES & RISKS ════ -->
+<div class="slide active" data-label="COMPUTER CRIMES &amp; RISKS">
+  <div class="label">COMPUTER CRIMES &amp; RISKS</div>
+  <h2>Risks Specific to Ocular</h2>
+  <p class="subtitle">Four threats we identified and actively mitigated</p>
+
+  <div class="risk-grid">
+    <div class="risk-card" style="border-color:#f8717144;border-top:2px solid #f87171">
+      <span class="r-label red">Risk 1</span>
+      <h3>Sensitive Data Theft</h3>
+      <p>User uploads a medical or legal document image. If intercepted, the raw image content is exposed.</p>
+      <div class="mitigation mit-c">Mitigation: Processed entirely in local memory. No temporary files written to disk. API requests use HTTPS.</div>
+    </div>
+    <div class="risk-card" style="border-color:#fbbf2444;border-top:2px solid #fbbf24">
+      <span class="r-label amber">Risk 2</span>
+      <h3>Misuse of OCR Output</h3>
+      <p>Automated document conversion could be used to falsify records or extract text without consent.</p>
+      <div class="mitigation mit-c">Mitigation: Confidence score + AI label on every result. Discourages use of low-confidence outputs for official purposes.</div>
+    </div>
+    <div class="risk-card" style="border-color:#f8717144;border-top:2px solid #f87171">
+      <span class="r-label red">Risk 3</span>
+      <h3>API Key Compromise</h3>
+      <p>If the OpenAI API key leaks (e.g., committed to a public repository), it enables unauthorized API usage at the owner's expense.</p>
+      <div class="mitigation mit-g">Mitigation: Key stored exclusively in .env file — never in source code, never committed to version control.</div>
+    </div>
+    <div class="risk-card" style="border-color:#60a5fa44;border-top:2px solid #60a5fa">
+      <span class="r-label blue">Risk 4</span>
+      <h3>Over-Reliance on AI Output</h3>
+      <p>Users may accept AI-generated text as ground truth, even when the document was noisy or handwritten.</p>
+      <div class="mitigation mit-g">Mitigation: Transparency header in every .docx output: confidence score + "AI-assisted" disclosure label.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 18 — COMPUTER CONTRACTS ════ -->
+<div class="slide" data-label="COMPUTER CONTRACTS">
+  <div class="label">COMPUTER CONTRACTS</div>
+  <h2>Contract Relationships in Ocular</h2>
+  <p class="subtitle">Every software deployment creates implicit and explicit contractual obligations</p>
+
+  <div class="two-col-3" style="flex:1;margin-top:8px">
+    <div>
+      <ul class="contract-list">
+        <li>
+          <div class="c-icon" style="background:#0a0a1a;border:1px solid #1a1a3a">📜</div>
+          <div class="c-body">
+            <h4 class="blue">OpenAI Terms of Service</h4>
+            <p>By using the GPT-4o API, we are bound by OpenAI's usage policies. This includes restrictions on processing certain content types and obligations around data handling under their enterprise agreement.</p>
+          </div>
+        </li>
+        <li>
+          <div class="c-icon" style="background:#0a1a0a;border:1px solid #1a3a1a">🤝</div>
+          <div class="c-body">
+            <h4 class="green">Implicit User Agreement</h4>
+            <p>A user who runs Ocular implicitly agrees that the output may not be 100% accurate and that the tool is for assistance only. This should be made explicit in a formal Terms of Use for any production deployment.</p>
+          </div>
+        </li>
+        <li>
+          <div class="c-icon" style="background:#1a100a;border:1px solid #3a2a1a">⚖️</div>
+          <div class="c-body">
+            <h4 class="amber">Developer Responsibilities</h4>
+            <p>We are responsible for: correct attribution of open-source libraries, ensuring the tool does not produce outputs used to deceive or defraud, and disclosing known limitations clearly.</p>
+          </div>
+        </li>
+        <li>
+          <div class="c-icon" style="background:#0a0a0a;border:1px solid #1a1a1a">🔏</div>
+          <div class="c-body">
+            <h4>Licensing Obligation</h4>
+            <p>Apache 2.0 and MIT libraries require attribution. Any release of Ocular must include a LICENSE file and a NOTICE file listing all third-party dependencies.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="170" height="220" viewBox="0 0 170 220">
+        <text x="85" y="16" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">CONTRACT CHAIN</text>
+        <rect x="35" y="26" width="100" height="30" rx="4" fill="#0a0a1a" stroke="#60a5fa44"/>
+        <text x="85" y="45" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="Segoe UI">OpenAI ToS</text>
+        <line x1="85" y1="56" x2="85" y2="70" stroke="#333" stroke-width="1"/>
+        <rect x="25" y="70" width="120" height="30" rx="4" fill="#0a0a0a" stroke="#1a1a1a"/>
+        <text x="85" y="89" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Ocular (Developer)</text>
+        <line x1="85" y1="100" x2="85" y2="114" stroke="#333" stroke-width="1"/>
+        <rect x="35" y="114" width="100" height="30" rx="4" fill="#0a1a0a" stroke="#4ade8044"/>
+        <text x="85" y="133" text-anchor="middle" fill="#4ade80" font-size="9" font-family="Segoe UI">User Agreement</text>
+        <line x1="85" y1="144" x2="85" y2="158" stroke="#333" stroke-width="1"/>
+        <rect x="25" y="158" width="120" height="30" rx="4" fill="#100a0a" stroke="#f8717144"/>
+        <text x="85" y="177" text-anchor="middle" fill="#f87171" font-size="9" font-family="Segoe UI">Liability Boundary</text>
+        <text x="85" y="206" text-anchor="middle" fill="#555" font-size="7.5" font-family="Segoe UI">Must be clearly disclosed</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 19 — LIMITATIONS OF PHASE 1 ════ -->
+<div class="slide" data-label="TECHNICAL LIMITATIONS OF PHASE 1">
+  <div class="label">TECHNICAL LIMITATIONS OF PHASE 1</div>
+  <h2>Why Phase 1 Was Not Enough</h2>
+  <p class="subtitle">Static logic cannot adapt. Intelligence requires more than rules.</p>
+
+  <div class="two-col" style="flex:1;margin-top:8px">
+    <div>
+      <div class="prop-grid" style="grid-template-columns:1fr;gap:12px">
+        <div class="prop-card" style="border-top:2px solid #f87171">
+          <div class="p-icon">🔧</div>
+          <h3 class="red">Static Logic</h3>
+          <p>Every document was processed with the same fixed pipeline. A blurry photograph and a clean scan were treated identically — with predictably poor results for the blurry one.</p>
+        </div>
+        <div class="prop-card" style="border-top:2px solid #f87171">
+          <div class="p-icon">❌</div>
+          <h3 class="red">No Autonomy</h3>
+          <p>The system could not decide whether to apply denoising or skip it. It could not decide whether to call an external model. Human had to do everything manually.</p>
+        </div>
+        <div class="prop-card" style="border-top:2px solid #f87171">
+          <div class="p-icon">🚫</div>
+          <h3 class="red">No Learning</h3>
+          <p>Phase 1 had no memory. Every run was completely stateless. User feedback was discarded. Poor outputs on the same document type would repeat indefinitely.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="190" height="260" viewBox="0 0 190 260">
+        <text x="95" y="18" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">PHASE 1 — FIXED PIPELINE</text>
+        <!-- Linear boxes -->
+        <rect x="45" y="28" width="100" height="32" rx="4" fill="#0d0a0a" stroke="#3a1a1a"/>
+        <text x="95" y="48" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Image Input</text>
+        <line x1="95" y1="60" x2="95" y2="72" stroke="#333" stroke-width="1"/>
+        <rect x="45" y="72" width="100" height="32" rx="4" fill="#0d0a0a" stroke="#3a1a1a"/>
+        <text x="95" y="92" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Fixed Preprocess</text>
+        <line x1="95" y1="104" x2="95" y2="116" stroke="#333" stroke-width="1"/>
+        <rect x="45" y="116" width="100" height="32" rx="4" fill="#0d0a0a" stroke="#3a1a1a"/>
+        <text x="95" y="136" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Tesseract OCR</text>
+        <line x1="95" y1="148" x2="95" y2="160" stroke="#333" stroke-width="1"/>
+        <rect x="45" y="160" width="100" height="32" rx="4" fill="#0d0a0a" stroke="#3a1a1a"/>
+        <text x="95" y="180" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Basic Format</text>
+        <line x1="95" y1="192" x2="95" y2="204" stroke="#333" stroke-width="1"/>
+        <rect x="45" y="204" width="100" height="32" rx="4" fill="#0d0a0a" stroke="#3a1a1a"/>
+        <text x="95" y="224" text-anchor="middle" fill="#888" font-size="9" font-family="Segoe UI">Export .docx</text>
+        <!-- No feedback arrow -->
+        <text x="155" y="140" fill="#f87171" font-size="8" font-family="Segoe UI">No</text>
+        <text x="150" y="152" fill="#f87171" font-size="8" font-family="Segoe UI">feedback</text>
+        <text x="152" y="164" fill="#f87171" font-size="8" font-family="Segoe UI">loop</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 20 — AGENTIC CONCEPT ════ -->
+<div class="slide" data-label="AGENTIC SYSTEM CONCEPT">
+  <div class="label">AGENTIC SYSTEM CONCEPT</div>
+  <h2>What Makes a System "Agentic"?</h2>
+  <p class="subtitle">Four properties that transform a tool into an agent</p>
+
+  <div class="prop-grid" style="flex:1;margin-top:12px;align-items:stretch">
+    <div class="prop-card" style="border-top:2px solid #00e5cc">
+      <div class="p-icon">👁️</div>
+      <h3 class="cyan">Perception</h3>
+      <p>The agent observes its environment. In Ocular: the PerceptionAgent preprocesses the image and extracts OCR data — making the raw input understandable.</p>
+    </div>
+    <div class="prop-card" style="border-top:2px solid #4ade80">
+      <div class="p-icon">🧠</div>
+      <h3 class="green">Decision-Making</h3>
+      <p>The agent reasons about what to do next. In Ocular: the AnalysisAgent decides whether to enhance the image and what GPT-4o query to make.</p>
+    </div>
+    <div class="prop-card" style="border-top:2px solid #fbbf24">
+      <div class="p-icon">⚡</div>
+      <h3 class="amber">Action</h3>
+      <p>The agent takes an action based on its decision. In Ocular: the FormattingAgent and DocumentAgent produce a structured, formatted Word file.</p>
+    </div>
+    <div class="prop-card" style="border-top:2px solid #c084fc">
+      <div class="p-icon">📚</div>
+      <h3 class="purple">Learning</h3>
+      <p>The agent retains experience. In Ocular: the MemoryAgent stores confidence history in SQLite and adapts processing based on past results.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 21 — GAP ANALYSIS ════ -->
+<div class="slide" data-label="GAP ANALYSIS — PHASE 1 VS OCULAR">
+  <div class="label">GAP ANALYSIS — PHASE 1 VS OCULAR</div>
+  <h2>Phase 1 vs. Ocular — The Gap Table</h2>
+
+  <div style="flex:1;margin-top:12px">
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Phase 1</th>
+          <th>Ocular (Phase 2)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Adaptive Preprocessing</td>
+          <td><span class="cross">✗</span> Fixed pipeline</td>
+          <td><span class="tick">✓</span> Agent decides per-image</td>
+        </tr>
+        <tr>
+          <td>Document Understanding</td>
+          <td><span class="cross">✗</span> Character recognition only</td>
+          <td><span class="tick">✓</span> GPT-4o structure analysis</td>
+        </tr>
+        <tr>
+          <td>Formatting Intelligence</td>
+          <td><span class="cross">✗</span> Heuristic rules only</td>
+          <td><span class="tick">✓</span> AI-driven paragraph typing</td>
+        </tr>
+        <tr>
+          <td>Learning Over Time</td>
+          <td><span class="cross">✗</span> Stateless, no memory</td>
+          <td><span class="tick">✓</span> SQLite long-term memory</td>
+        </tr>
+        <tr>
+          <td>Explainability</td>
+          <td><span class="cross">✗</span> No decision log</td>
+          <td><span class="tick">✓</span> Full agent audit trail</td>
+        </tr>
+        <tr>
+          <td>Graceful Degradation</td>
+          <td><span class="cross">✗</span> Crashes on bad input</td>
+          <td><span class="tick">✓</span> Rule-based fallback always runs</td>
+        </tr>
+        <tr>
+          <td>User Feedback Loop</td>
+          <td><span class="cross">✗</span> Not possible</td>
+          <td><span class="tick">✓</span> 👍/👎 stored in memory</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════ SLIDE 22 — VISION TOOL→AGENT ════ -->
+<div class="slide" data-label="AGENTIC VISION — TOOL TO AGENT">
+  <div class="label">AGENTIC VISION — TOOL TO AGENT</div>
+  <h2>From Reactive Tool to Proactive Agent</h2>
+  <p class="subtitle">The fundamental architectural shift in Phase 2</p>
+
+  <div class="ba-grid">
+    <div class="ba-col">
+      <h3 class="red">Phase 1 — Tool</h3>
+      <ul>
+        <li>Responds only when triggered</li>
+        <li>Same pipeline every time</li>
+        <li>No awareness of image quality</li>
+        <li>No understanding of document structure</li>
+        <li>Forgets everything after each run</li>
+        <li>Fails silently on errors</li>
+        <li>User cannot verify reasoning</li>
+      </ul>
+    </div>
+    <div class="ba-col" style="background:#050f05">
+      <h3 class="green">Ocular — Agent</h3>
+      <ul>
+        <li style="color:#ccc">Perceives image quality autonomously</li>
+        <li style="color:#ccc">Adapts preprocessing to each input</li>
+        <li style="color:#ccc">Understands document layout via GPT-4o</li>
+        <li style="color:#ccc">Formats output based on content type</li>
+        <li style="color:#ccc">Stores history in SQLite memory</li>
+        <li style="color:#ccc">Graceful fallback on every failure mode</li>
+        <li style="color:#ccc">Full audit trail exportable by user</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 23 — AGENT ARCHITECTURE ════ -->
+<div class="slide" data-label="AGENT ARCHITECTURE">
+  <div class="label">AGENT ARCHITECTURE</div>
+  <h2>Ocular's Five-Agent Pipeline</h2>
+  <p class="subtitle">Each agent has exactly one responsibility — single-responsibility principle</p>
+
+  <div class="two-col-3" style="flex:1;margin-top:8px">
+    <div class="pipeline">
+      <div class="pipe-node" style="border-color:#00e5cc44">
+        <div class="pn-icon">🖼️</div>
+        <div class="pn-body">
+          <h4 class="cyan">Input — Image File</h4>
+          <p>User selects a document image (.jpg/.png/.tiff)</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ orchestrator.process()</div>
+      <div class="pipe-node" style="border-color:#00e5cc44">
+        <div class="pn-icon">👁️</div>
+        <div class="pn-body">
+          <h4 class="cyan">PerceptionAgent</h4>
+          <p>Preprocess image → run Tesseract OCR → extract layout features</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ confidence score + ocr_text</div>
+      <div class="pipe-node" style="border-color:#4ade8044">
+        <div class="pn-icon">🧠</div>
+        <div class="pn-body">
+          <h4 class="green">AnalysisAgent</h4>
+          <p>GPT-4o Vision → structural JSON (paragraphs, types, formatting)</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ document_analysis JSON</div>
+      <div class="pipe-node" style="border-color:#fbbf2444">
+        <div class="pn-icon">✏️</div>
+        <div class="pn-body">
+          <h4 class="amber">FormattingAgent</h4>
+          <p>Map paragraph types → Word style specifications</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ document_plan list</div>
+      <div class="pipe-node" style="border-color:#c084fc44">
+        <div class="pn-icon">📄</div>
+        <div class="pn-body">
+          <h4 class="purple">DocumentAgent</h4>
+          <p>Generate formatted .docx with python-docx</p>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓ output.docx + store_processing()</div>
+      <div class="pipe-node" style="border-color:#60a5fa44">
+        <div class="pn-icon">💾</div>
+        <div class="pn-body">
+          <h4 class="blue">MemoryAgent</h4>
+          <p>Persist result, confidence, feedback to SQLite</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center">
+      <svg width="160" height="280" viewBox="0 0 160 280">
+        <text x="80" y="16" text-anchor="middle" fill="#444" font-size="8" letter-spacing="2" font-family="Segoe UI">ORCHESTRATOR</text>
+        <!-- Central line -->
+        <line x1="80" y1="22" x2="80" y2="258" stroke="#1a1a1a" stroke-width="1.5"/>
+        <!-- Agent bubbles -->
+        <circle cx="80" cy="50" r="22" fill="#0a1a1a" stroke="#00e5cc44"/>
+        <text x="80" y="54" text-anchor="middle" fill="#00e5cc" font-size="8.5" font-family="Segoe UI">PERCEIVE</text>
+        <circle cx="80" cy="106" r="22" fill="#0a1a0a" stroke="#4ade8044"/>
+        <text x="80" y="110" text-anchor="middle" fill="#4ade80" font-size="8.5" font-family="Segoe UI">ANALYSE</text>
+        <circle cx="80" cy="162" r="22" fill="#1a130a" stroke="#fbbf2444"/>
+        <text x="80" y="166" text-anchor="middle" fill="#fbbf24" font-size="8.5" font-family="Segoe UI">FORMAT</text>
+        <circle cx="80" cy="218" r="22" fill="#120a1a" stroke="#c084fc44"/>
+        <text x="80" y="222" text-anchor="middle" fill="#c084fc" font-size="8.5" font-family="Segoe UI">DOCUMENT</text>
+        <!-- Memory side bubble -->
+        <circle cx="138" cy="162" r="18" fill="#0a0a1a" stroke="#60a5fa44"/>
+        <text x="138" y="160" text-anchor="middle" fill="#60a5fa" font-size="7.5" font-family="Segoe UI">MEM</text>
+        <text x="138" y="172" text-anchor="middle" fill="#60a5fa" font-size="7.5" font-family="Segoe UI">ORY</text>
+        <line x1="102" y1="162" x2="120" y2="162" stroke="#60a5fa33" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDE 24 — AGENT TYPE SELECTION ════ -->
+<div class="slide" data-label="AGENT TYPE SELECTION">
+  <div class="label">AGENT TYPE SELECTION</div>
+  <h2>Why Goal-Based + Learning Agent?</h2>
+  <p class="subtitle">Choosing the right agent classification for Ocular</p>
+
+  <div style="flex:1;margin-top:10px">
+    <div class="type-grid">
+      <div class="type-card">
+        <div class="tc-row">
+          <h3 class="red">Simple Reflex Agent</h3>
+          <span class="rej-tag">REJECTED</span>
+        </div>
+        <p>Condition → Action only. Cannot handle noisy or ambiguous documents. No memory. No planning. Phase 1 was essentially this.</p>
+      </div>
+      <div class="type-card">
+        <div class="tc-row">
+          <h3 class="red">Fully Autonomous Agent</h3>
+          <span class="rej-tag">REJECTED</span>
+        </div>
+        <p>Too risky for document processing. A fully autonomous agent could generate or modify content without any human oversight — unacceptable for accuracy-critical applications.</p>
+      </div>
+      <div class="type-card" style="background:#0a150a;border-color:#4ade8066">
+        <div class="tc-row">
+          <h3 class="green">Goal-Based + Learning Agent</h3>
+          <span class="chosen-tag">CHOSEN ✓</span>
+        </div>
+        <p>Has a clear goal (accurate formatted document), makes decisions to achieve it, and improves over time through stored feedback. Human remains in control.</p>
+      </div>
+      <div class="type-card">
+        <div class="tc-row">
+          <h3 style="color:#555">Pure Utility Agent</h3>
+          <span class="rej-tag">NOT FIT</span>
+        </div>
+        <p>Optimises a utility function only. Document formatting requires multi-objective reasoning — accuracy, readability, and user preference simultaneously.</p>
+      </div>
+    </div>
+
+    <div style="background:#0a0a0a;border-left:2px solid #4ade80;padding:13px 18px;border-radius:0 6px 6px 0;margin-top:14px">
+      <p style="font-size:.82rem;color:#888;line-height:1.55">
+        <span class="green">Justification:</span> Goal-based agents act with purpose rather than reflex.
+        Adding the learning layer means Ocular's accuracy improves with each document processed —
+        without requiring a complete redesign.
+      </p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="bottom-bar">
+  <div class="slide-counter" id="counter">17 / 32</div>
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <button onclick="move(-1)">←</button>
+    <button onclick="move(1)">→</button>
+  </div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dots');
+const counter=document.getElementById('counter');
+let cur=0;
+const BASE=17;
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>go(i);
+  dotsEl.appendChild(d);
+});
+function go(n){
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('on');
+  cur=(n+slides.length)%slides.length;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('on');
+  counter.textContent=String(BASE+cur).padStart(2,'0')+' / 32';
+}
+function move(d){go(cur+d)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')move(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')move(-1);
+});
+</script>
+</body>
+</html>

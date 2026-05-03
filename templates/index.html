@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agentic OCR System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">🔬</div>
+        <div class="brand-text">
+          <h1>Agentic OCR System</h1>
+          <div class="cycle-bar">
+            <span class="cycle-step" id="cs-observe">Observe</span>
+            <span class="cycle-arrow">→</span>
+            <span class="cycle-step" id="cs-interpret">Interpret</span>
+            <span class="cycle-arrow">→</span>
+            <span class="cycle-step" id="cs-decide">Decide</span>
+            <span class="cycle-arrow">→</span>
+            <span class="cycle-step" id="cs-act">Act</span>
+            <span class="cycle-arrow">→</span>
+            <span class="cycle-step" id="cs-learn">Learn</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-ghost" onclick="openHistory()">📊 History</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN GRID ──────────────────────────────────────────────────────── -->
+  <main class="app-grid">
+
+    <!-- ── LEFT: UPLOAD ─────────────────────────────────────────────────── -->
+    <section class="card upload-card">
+      <div class="card-header">
+        <span class="card-icon">📁</span>
+        <h2>Input Image</h2>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div class="drop-inner">
+          <div class="drop-emoji" id="drop-emoji">🖼️</div>
+          <p class="drop-title" id="drop-title">Drop image here or click to browse</p>
+          <p class="drop-sub">JPG · PNG · BMP · TIFF</p>
+        </div>
+        <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.bmp,.tiff,.tif" />
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-box hidden" id="preview-box">
+        <img id="preview-img" src="" alt="Preview" />
+        <div class="preview-meta" id="preview-meta"></div>
+      </div>
+
+      <!-- Convert button -->
+      <button class="btn-convert" id="convert-btn" onclick="startConversion()" disabled>
+        <span class="btn-icon">▶</span>
+        <span class="btn-label">Convert with AI Agent</span>
+      </button>
+
+      <!-- Reset -->
+      <button class="btn-reset hidden" id="reset-btn" onclick="resetApp()">
+        ↺ New Image
+      </button>
+    </section>
+
+    <!-- ── CENTER: PIPELINE ──────────────────────────────────────────────── -->
+    <section class="card pipeline-card">
+      <div class="card-header">
+        <span class="card-icon">🤖</span>
+        <h2>Agent Pipeline</h2>
+      </div>
+
+      <div class="pipeline">
+
+        <div class="pipeline-step" id="ps-observe">
+          <div class="ps-left">
+            <div class="ps-orb">👁️</div>
+            <div class="ps-connector"></div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-title">Observe</div>
+            <div class="ps-agent">Perception Agent</div>
+            <div class="ps-desc">Image preprocessing &amp; OCR baseline</div>
+          </div>
+          <div class="ps-badge" id="pb-observe">⏳</div>
+        </div>
+
+        <div class="pipeline-step" id="ps-interpret">
+          <div class="ps-left">
+            <div class="ps-orb">🧠</div>
+            <div class="ps-connector"></div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-title">Interpret</div>
+            <div class="ps-agent">Vision Agent · GPT-4o</div>
+            <div class="ps-desc">Full text extraction &amp; structure analysis</div>
+          </div>
+          <div class="ps-badge" id="pb-interpret">⏳</div>
+        </div>
+
+        <div class="pipeline-step" id="ps-decide">
+          <div class="ps-left">
+            <div class="ps-orb">⚡</div>
+            <div class="ps-connector"></div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-title">Decide</div>
+            <div class="ps-agent">Formatting Agent</div>
+            <div class="ps-desc">Style &amp; layout decisions</div>
+          </div>
+          <div class="ps-badge" id="pb-decide">⏳</div>
+        </div>
+
+        <div class="pipeline-step" id="ps-act">
+          <div class="ps-left">
+            <div class="ps-orb">📄</div>
+            <div class="ps-connector"></div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-title">Act</div>
+            <div class="ps-agent">Document Agent</div>
+            <div class="ps-desc">Generate formatted .docx</div>
+          </div>
+          <div class="ps-badge" id="pb-act">⏳</div>
+        </div>
+
+        <div class="pipeline-step last" id="ps-learn">
+          <div class="ps-left">
+            <div class="ps-orb">📚</div>
+          </div>
+          <div class="ps-body">
+            <div class="ps-title">Learn</div>
+            <div class="ps-agent">Memory Agent</div>
+            <div class="ps-desc">Persist result &amp; update knowledge</div>
+          </div>
+          <div class="ps-badge" id="pb-learn">⏳</div>
+        </div>
+
+      </div><!-- /pipeline -->
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+          <div class="progress-glow" id="progress-glow" style="left:0%"></div>
+        </div>
+        <div class="progress-info">
+          <span class="progress-msg" id="progress-msg">Ready</span>
+          <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+      </div>
+
+      <!-- Metrics (revealed on completion) -->
+      <div class="metrics hidden" id="metrics">
+        <div class="metric">
+          <div class="metric-val" id="m-paragraphs">—</div>
+          <div class="metric-lbl">Paragraphs</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="m-ocr">—</div>
+          <div class="metric-lbl">OCR Confidence</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="m-ai">—</div>
+          <div class="metric-lbl">AI Analysis</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="m-time">—</div>
+          <div class="metric-lbl">Time (sec)</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val" id="m-cols">—</div>
+          <div class="metric-lbl">Columns</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RIGHT: LOG ────────────────────────────────────────────────────── -->
+    <section class="card log-card">
+      <div class="card-header">
+        <span class="card-icon">📡</span>
+        <h2>Live Agent Log</h2>
+        <button class="btn-ghost-sm" onclick="clearLog()">Clear</button>
+      </div>
+      <div class="log-output" id="log-output">
+        <div class="log-row">
+          <span class="log-badge badge-system">SYSTEM</span>
+          <span class="log-msg">Agentic OCR ready. Upload an image to begin.</span>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /app-grid -->
+
+  <!-- ── RESULT BAR ──────────────────────────────────────────────────────── -->
+  <div class="result-bar hidden" id="result-bar">
+    <div class="result-left">
+      <span class="result-check">✓</span>
+      <span class="result-txt">Document created successfully</span>
+      <span class="result-tags" id="result-tags"></span>
+    </div>
+    <div class="result-right">
+      <button class="btn-download" id="download-btn" onclick="downloadDoc()">
+        ⬇&nbsp;&nbsp;Download .docx
+      </button>
+      <button class="btn-ghost" onclick="showExplain()">🔍 Explain</button>
+      <div class="feedback-wrap">
+        <span class="feedback-lbl">Was the result good?</span>
+        <button class="btn-fb" onclick="sendFeedback('positive')" title="Good result">👍</button>
+        <button class="btn-fb" onclick="sendFeedback('negative')" title="Poor result">👎</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HISTORY MODAL ──────────────────────────────────────────────────── -->
+  <div class="modal-bg hidden" id="history-modal" onclick="if(event.target===this)closeHistory()">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>📊 Processing History</h3>
+        <button class="btn-close" onclick="closeHistory()">✕</button>
+      </div>
+      <div class="modal-body" id="history-body">
+        <div class="spinner">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EXPLAIN MODAL ──────────────────────────────────────────────────── -->
+  <div class="modal-bg hidden" id="explain-modal" onclick="if(event.target===this)closeExplain()">
+    <div class="modal modal-wide">
+      <div class="modal-head">
+        <h3>🔍 Agent Explainability Report</h3>
+        <button class="btn-close" onclick="closeExplain()">✕</button>
+      </div>
+      <div class="modal-body">
+        <pre class="explain-pre" id="explain-pre">No report yet.</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

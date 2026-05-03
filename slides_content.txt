@@ -1,0 +1,774 @@
+================================================================
+OCULAR — AGENTIC OCR SYSTEM
+SLIDE-BY-SLIDE CONTENT GUIDE
+Professional Practices in IT
+================================================================
+HOW TO USE: Copy each slide's content block into your AI slide
+tool (e.g. Gamma, Beautiful.ai, SlidesAI). Use the VISUAL HINT
+to guide image/icon selection.
+================================================================
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 1 — TITLE SLIDE
+────────────────────────────────────────────────────────────────
+HEADING:   Ocular
+SUBTITLE:  Agentic OCR System — Image to Formatted Word
+NAMES:     Shahzaib Ali Khan  |  Abdullah Naeem  |  Muhammad Umar
+COURSE:    Professional Practices in IT
+VISUAL:    Dark minimal background, glowing eye/lens icon
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 2 — PHASE 1 RECAP
+────────────────────────────────────────────────────────────────
+HEADING:  What We Built in Phase 1
+
+PROBLEM:
+  Scanned documents lose all formatting when converted to text.
+  Manual reconstruction wastes time.
+
+USERS:
+  Students, academics, office professionals
+
+TECHNOLOGY:
+  Python · Tesseract OCR · OpenCV · python-docx · Tkinter
+
+KEY FEATURES:
+  • Image preprocessing (denoise, deskew, threshold)
+  • OCR text extraction
+  • Basic formatting detection (bold, heading, alignment)
+  • Export to .docx
+
+VISUAL:  Screenshot of the Ocular desktop UI (use actual screenshot)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 3 — COMPUTING AS A FORMAL PROFESSION
+────────────────────────────────────────────────────────────────
+HEADING:  Software Development Is a Profession, Not Just Coding
+
+3 POINTS (use icon cards):
+  👤 Responsibility to USERS
+     → Ocular must produce accurate, trustworthy output
+  🌍 Responsibility to SOCIETY
+     → Tools that process documents affect real decisions
+  🔒 Responsibility to DATA
+     → User images may contain sensitive/private information
+
+BOTTOM LINE:
+  Engineers who build AI tools carry the same duty of care
+  as doctors or lawyers.
+
+VISUAL:  Three icon cards (person, globe, shield)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 4 — ETHICS vs. MORALS
+────────────────────────────────────────────────────────────────
+HEADING:  Ethics vs. Morals in Ocular's Design
+
+TWO-COLUMN LAYOUT:
+
+  MORALS (Personal Beliefs)        ETHICS (Professional Standards)
+  ─────────────────────────        ────────────────────────────────
+  "I'll hardcode the API key       "API keys must be stored in
+   — it saves time"                 .env files, never in source code"
+
+  "This open-source model           "Attribute all third-party
+   is free to use"                   libraries correctly"
+
+OUR DESIGN CHOICE:
+  We followed professional ethics → API key in .env,
+  open libraries credited in requirements.txt
+
+VISUAL:  Split card layout, morals = grey tone, ethics = brand colour
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 5 — PROFESSIONAL ETHICS
+────────────────────────────────────────────────────────────────
+HEADING:  Professional Ethics in Ocular
+
+3 PILLARS (icon + 1-line each):
+
+  📋 CODE QUALITY
+     Modular agent architecture — each agent has one clear job
+
+  🔐 SECURITY
+     API key protected via .env · No user data stored externally
+
+  🛡️ USER SAFETY
+     Rule-based fallback ensures output even when AI API fails
+     Confidence score shown so users know result reliability
+
+VISUAL:  Three pillar/column graphic
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 6 — ETHICAL DECISION MAKING
+────────────────────────────────────────────────────────────────
+HEADING:  A Real Ethical Decision We Faced
+
+THE DECISION:
+  Speed vs. Quality — Should we skip image preprocessing
+  to make the app faster?
+
+OPTION A (Speed):
+  Skip denoising/deskewing → faster output → lower accuracy
+
+OPTION B (Quality — our choice):
+  Full preprocessing pipeline → slower → significantly more
+  accurate OCR, especially on handwritten/noisy images
+
+WHY QUALITY WON:
+  Inaccurate output misleads users. Speed is never worth
+  producing wrong information.
+
+VISUAL:  Two-path decision diagram, Option B highlighted
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 7 — IMPORTANCE OF ETHICAL DECISION MAKING
+────────────────────────────────────────────────────────────────
+HEADING:  Why Ethical Decisions Matter
+
+THREE IMPACTS:
+
+  USERS
+  → A student who gets wrong OCR output may submit incorrect work.
+    Our preprocessing decision directly protects them.
+
+  SOCIETY
+  → Document digitisation tools are used in healthcare, law,
+    education — errors have real consequences.
+
+  SYSTEM TRUST
+  → Confidence scores + explainability log let users decide
+    whether to trust the output. Trust must be earned.
+
+VISUAL:  Ripple/impact graphic (decision → users → society → trust)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 8 — ETHICAL THEORIES & HUMAN-CENTERED DESIGN
+────────────────────────────────────────────────────────────────
+HEADING:  Ethical Frameworks Applied to Ocular
+
+UTILITARIANISM (applied):
+  "Greatest good for greatest number"
+  → Full preprocessing benefits all users, not just fast machines
+
+DEONTOLOGY (applied):
+  "Do the right thing regardless of outcome"
+  → We don't store or log user document images, ever —
+    even though storing them could improve the AI model
+
+HUMAN-CENTERED DESIGN:
+  → User controls every step: selects file, reviews output,
+    gives feedback. The agent assists — it does not replace.
+
+ADDICTIVE SYSTEM TRAP — AVOIDED:
+  → No engagement loops, no data harvesting, no dark patterns.
+    Ocular does one job and exits cleanly.
+
+VISUAL:  Two theory badges + HCD diagram
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 9 — ACM / IEEE CODE OF ETHICS
+────────────────────────────────────────────────────────────────
+HEADING:  ACM/IEEE Principles in Our Project
+
+PRINCIPLES FOLLOWED:
+  ✅ ACM 1.3 — Honest & Trustworthy
+     Confidence scores shown; fallback labelled "rule-based"
+
+  ✅ ACM 2.2 — High Quality Work
+     Modular, tested agent architecture
+
+  ✅ IEEE 4 — Treating persons fairly
+     Accessible UI, no bias toward document types
+
+PRINCIPLE AT RISK:
+  ⚠️ ACM 1.6 — Respect Privacy
+     Images uploaded by users could contain private data.
+     Current version processes locally but risk must be managed
+     as we move to cloud/API processing in Phase 2.
+
+VISUAL:  ACM/IEEE logos, tick/warning icons
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 10 — ETHICAL DECISION PROCESS (4-STEP MODEL)
+────────────────────────────────────────────────────────────────
+HEADING:  4-Step Ethical Decision Process — Applied
+
+STEP 1 — IDENTIFY THE ISSUE:
+  User images may contain private or confidential content.
+
+STEP 2 — ANALYZE STAKEHOLDERS:
+  Users (privacy at risk) · Developers · OpenAI (API recipient)
+
+STEP 3 — EVALUATE ALTERNATIVES:
+  A) Send image to GPT-4o API — convenient, less private
+  B) Local OCR only — private, less intelligent
+  ✅ C) Hybrid — local OCR first, API only for structure analysis
+
+STEP 4 — JUSTIFIED DECISION:
+  Hybrid approach chosen. Cybersecurity risk minimised —
+  full images are encoded in-memory, never saved to disk.
+  Vulnerability: API key leakage → mitigated via .env file.
+
+VISUAL:  4-step vertical flow with decision highlighted at Step 4
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 11 — SOFTWARE DEVELOPMENT & INDUSTRY PRACTICES
+────────────────────────────────────────────────────────────────
+HEADING:  Student Project vs. Software House — How We Compare
+
+TWO-COLUMN TABLE:
+
+  Aspect              Student (Us)          Software House
+  ──────────────────  ──────────────────    ───────────────────
+  Communication       WhatsApp / in-person  Jira, Slack, standups
+  Version Control     Git (local)           GitHub + PRs + CI/CD
+  Code Review         Self-review           Peer review mandatory
+  AI Ethics           Considered manually   Formal AI audit process
+  Documentation       This presentation     Technical specs, wikis
+
+LESSON:
+  Adopting even basic version control and peer review would
+  significantly improve code reliability and ethical accountability.
+
+VISUAL:  Comparison table, student column in blue, industry in grey
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 12 — TRENDS IN IT & AGENTIC SYSTEMS
+────────────────────────────────────────────────────────────────
+HEADING:  The Industry Is Moving Toward Autonomous AI Agents
+
+TREND 1 — Rise of AI Agents
+  From tools that respond → agents that perceive, decide, and act
+
+TREND 2 — Autonomous Pipelines
+  GPT-4o, LangChain, AutoGPT — agents now manage multi-step tasks
+
+TREND 3 — Industry Adoption
+  Microsoft Copilot, GitHub Copilot, Google Duet AI —
+  agentic systems are now mainstream developer tools
+
+WHERE OCULAR FITS:
+  Ocular is an early-stage agentic system —
+  Observe → Interpret → Decide → Act → Learn
+  exactly mirrors modern AI agent architectures
+
+VISUAL:  Timeline or trend arrow graphic, Ocular positioned on curve
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 13 — HOW THIS PROJECT HELPS YOUR CAREER
+────────────────────────────────────────────────────────────────
+HEADING:  What Ocular Built in Us
+
+TECHNICAL SKILLS:
+  • Python, OpenCV, Tesseract OCR
+  • OpenAI GPT-4o Vision API integration
+  • Agent-based software architecture
+  • Document generation (python-docx)
+
+PROFESSIONAL SKILLS:
+  • Ethical decision making under constraints
+  • Balancing speed vs. quality trade-offs
+  • Writing explainable, auditable systems
+
+IN THE AI ERA:
+  Developers who understand both AI capabilities AND
+  ethical responsibility are the most valuable —
+  and the most employable.
+
+VISUAL:  Skills radar or icon grid
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 14 — VIRTUAL WORK & SUSTAINABILITY
+────────────────────────────────────────────────────────────────
+HEADING:  Remote Collaboration & Green Computing
+
+REMOTE COLLABORATION:
+  • Team coordination via shared codebase and messaging
+  • Challenge: code conflicts, communication gaps
+  • Lesson: structured commits + clear task ownership matters
+
+GREEN COMPUTING IN OCULAR:
+  • Local preprocessing reduces unnecessary API calls
+  • Agent only escalates to GPT-4o when local OCR confidence is low
+  • No permanent cloud storage of user documents
+  → Fewer API calls = less energy = lower carbon cost
+
+VISUAL:  Leaf/sustainability icon + network collaboration diagram
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 15 — LEGAL ASPECTS OF COMPUTING
+────────────────────────────────────────────────────────────────
+HEADING:  Our Legal Responsibilities as Developers
+
+AS DEVELOPERS OF OCULAR, WE ARE RESPONSIBLE FOR:
+
+  📄 Data Protection
+     User images are processed locally; not stored or transmitted
+     without need. This is our legal and moral baseline.
+
+  👤 User Rights
+     Users must be able to delete their data and understand
+     how the system processes their documents.
+
+  ⚖️ Accuracy Liability
+     If OCR output is wrong and a user relies on it for
+     official purposes, the tool's limitations must be
+     clearly disclosed.
+
+VISUAL:  Legal scale / gavel icon with three bullet cards
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 16 — INTELLECTUAL PROPERTY RIGHTS (IPR)
+────────────────────────────────────────────────────────────────
+HEADING:  IPR, Licensing & Data Protection
+
+OWNERSHIP:
+  Ocular source code is owned by the development team.
+  Built on open-source libraries — their licenses apply.
+
+LIBRARIES USED & LICENSES:
+  • Tesseract OCR — Apache 2.0 (free, attribution required)
+  • python-docx   — MIT License
+  • OpenCV        — Apache 2.0
+  • OpenAI API    — Commercial terms apply
+
+LICENSING OPTION:
+  MIT License recommended for academic/open release.
+  Commercial release would require full legal review.
+
+GDPR MINDSET:
+  Although not yet deployed publicly, we designed Ocular with
+  GDPR principles: data minimisation, no unnecessary retention,
+  transparent processing.
+
+VISUAL:  License badge icons + GDPR shield graphic
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 17 — COMPUTER CRIMES & RISKS
+────────────────────────────────────────────────────────────────
+HEADING:  Security Risks Specific to Ocular
+
+RISK 1 — DATA THEFT
+  User uploads may contain confidential documents.
+  Risk: API interception during GPT-4o Vision call.
+  Mitigation: HTTPS enforced by OpenAI SDK; no raw storage.
+
+RISK 2 — MISUSE
+  Someone could use Ocular to extract text from private
+  documents they do not own (copyright/IP violation).
+  Mitigation: Terms of use must prohibit unauthorised use.
+
+RISK 3 — API KEY COMPROMISE
+  Exposed OPENAI_API_KEY = financial and data risk.
+  Mitigation: Stored in .env, never committed to version control.
+
+RISK 4 — OVER-RELIANCE
+  Users treating 70% confidence output as 100% accurate.
+  Mitigation: Confidence score displayed on every result.
+
+VISUAL:  Risk matrix (likelihood vs. impact), colour-coded
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 18 — COMPUTER CONTRACTS
+────────────────────────────────────────────────────────────────
+HEADING:  Contracts, Terms & Developer Responsibilities
+
+TERMS OF SERVICE (what Ocular must disclose):
+  • System is provided as-is; accuracy not guaranteed
+  • User is responsible for verifying OCR output
+  • Images are processed for conversion only
+
+USER AGREEMENT:
+  • Do not upload documents you do not have rights to process
+  • Feedback data may be used to improve the system
+
+DEVELOPER RESPONSIBILITIES:
+  • Maintain the system and fix defects promptly
+  • Disclose any data processing to third-party APIs (OpenAI)
+  • Provide a working uninstall / data deletion option
+
+VISUAL:  Contract/scroll icon with three-section layout
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 19 — TECHNICAL LIMITATIONS OF PHASE 1
+────────────────────────────────────────────────────────────────
+HEADING:  What Phase 1 Cannot Do
+
+STATIC LOGIC:
+  Preprocessing steps are fixed — same pipeline regardless
+  of document type or quality. No adaptation.
+
+NO AUTONOMY:
+  The system does not decide what to do next.
+  Every step is pre-programmed and sequential.
+
+NO INTELLIGENCE:
+  Tesseract does pattern matching — it does not understand
+  context, meaning, or document structure.
+
+NO LEARNING:
+  If OCR fails on a certain image type, Phase 1 will
+  fail the same way every time — it cannot improve.
+
+VISUAL:  Four red "X" cards showing each limitation
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 20 — AGENTIC SYSTEM CONCEPT
+────────────────────────────────────────────────────────────────
+HEADING:  What Makes a System "Agentic"?
+
+4 PROPERTIES:
+
+  👁️ PERCEPTION
+     Senses its environment (reads image, measures confidence)
+
+  🧠 DECISION-MAKING
+     Chooses actions based on what it perceives
+
+  ⚡ ACTION
+     Executes tasks (preprocess, OCR, generate document)
+
+  📚 LEARNING
+     Improves over time using stored history and feedback
+
+KEY POINT:
+  An agent does not just execute steps —
+  it reasons about which steps to take.
+
+VISUAL:  Four-node cycle diagram (Perception → Decision → Action → Learning)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 21 — GAP ANALYSIS: WHY PHASE 1 IS NOT AGENTIC
+────────────────────────────────────────────────────────────────
+HEADING:  The Gap Between Phase 1 and an Agentic System
+
+GAP TABLE:
+
+  Agentic Property   Phase 1 Status    Phase 2 (Ocular)
+  ─────────────────  ────────────────  ──────────────────────────
+  Perception         ❌ Fixed input    ✅ Confidence-aware sensing
+  Decision-making    ❌ Hardcoded      ✅ Agent decides preprocessing
+  Memory             ❌ None           ✅ SQLite short + long-term
+  Learning           ❌ None           ✅ Feedback loop stored in DB
+  Intelligence       ❌ Rule-only      ✅ GPT-4o Vision + rules
+
+CONCLUSION:
+  Phase 1 is a pipeline. Phase 2 (Ocular) is an agent.
+
+VISUAL:  Gap table with red X / green tick icons
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 22 — AGENTIC VISION
+────────────────────────────────────────────────────────────────
+HEADING:  Transforming Ocular: Tool → Agent
+
+TWO COLUMNS:
+
+  PHASE 1 (Tool)             OCULAR PHASE 2 (Agent)
+  ─────────────────────      ──────────────────────────────
+  Reactive — runs on         Proactive — decides what
+  user command only          preprocessing is needed
+
+  One fixed pipeline         Dynamic pipeline per document
+
+  No memory                  Remembers past documents
+
+  Single output              Confidence score + feedback loop
+
+  User must verify all       Agent flags low-confidence
+  output manually            sections automatically
+
+VISUAL:  Before/after transformation arrow
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 23 — AGENT ARCHITECTURE
+────────────────────────────────────────────────────────────────
+HEADING:  Ocular's Multi-Agent Architecture
+
+FLOW DIAGRAM (left to right):
+  [Image Input]
+    ↓
+  [Perception Agent]  — preprocess + Tesseract OCR
+    ↓
+  [Analysis Agent]    — GPT-4o Vision: detect structure
+    ↓
+  [Formatting Agent]  — map to paragraph styles
+    ↓
+  [Document Agent]    — write .docx
+    ↓
+  [Memory Agent]      — store result, log feedback
+
+EXTERNAL TOOLS:
+  OpenAI GPT-4o API · SQLite Database · Tesseract Engine
+
+VISUAL:  Horizontal agent pipeline diagram with icons per agent
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 24 — AGENT TYPE SELECTION
+────────────────────────────────────────────────────────────────
+HEADING:  Why We Chose a Goal-Based + Learning Agent
+
+GOAL-BASED:
+  The agent always works toward one clear goal:
+  "Produce the most accurate, best-formatted Word document."
+  Every decision (preprocessing level, confidence threshold)
+  is made to maximise that goal.
+
+LEARNING:
+  The agent stores every result in SQLite.
+  User feedback (👍/👎) is recorded and associated with outcomes.
+  Historical confidence averages inform future decisions.
+
+WHY NOT FULLY AUTONOMOUS?
+  Document conversion has legal/professional consequences.
+  A human must review and approve the final output.
+  → Semi-autonomous is the correct and responsible choice.
+
+VISUAL:  Agent type spectrum with Ocular positioned at "Goal + Learning"
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 25 — OPERATIONAL WORKFLOW
+────────────────────────────────────────────────────────────────
+HEADING:  Observe → Interpret → Decide → Act → Learn
+
+5-STEP CYCLE:
+
+  1. OBSERVE
+     Perception Agent reads the image, runs OCR,
+     measures confidence (e.g. 68%)
+
+  2. INTERPRET
+     Analysis Agent sends image to GPT-4o Vision.
+     GPT-4o returns structured JSON: headings, body, alignment.
+
+  3. DECIDE
+     Orchestrator checks confidence. If < 60%:
+     trigger aggressive preprocessing before re-OCR.
+
+  4. ACT
+     Formatting Agent + Document Agent generate the .docx
+     with proper styles, colours, spacing.
+
+  5. LEARN
+     Memory Agent stores result + processing time + feedback.
+     Next run benefits from historical context.
+
+VISUAL:  5-node circular workflow diagram
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 26 — INTELLIGENCE LAYER
+────────────────────────────────────────────────────────────────
+HEADING:  How Ocular Thinks
+
+THREE INTELLIGENCE LAYERS:
+
+  RULES (baseline)
+  → Heuristic fallback when API is unavailable.
+    e.g. ALL CAPS line = heading, short line = subheading
+
+  ML / COMPUTER VISION (core)
+  → OpenCV preprocessing: adaptive thresholding, deskewing,
+    denoising — trained algorithms, not hardcoded filters
+
+  LLM — GPT-4o Vision (highest tier)
+  → Understands document semantics.
+    Detects title, heading, body, bullets, alignment,
+    bold/italic from image context — not just pixel patterns.
+
+PRIORITY:  LLM > CV > Rules (graceful degradation)
+
+VISUAL:  Three-tier pyramid diagram
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 27 — MEMORY & CONTEXT
+────────────────────────────────────────────────────────────────
+HEADING:  Ocular's Memory System
+
+SHORT-TERM MEMORY (session):
+  → Python dictionary, lives in RAM
+  → Stores: current image name, OCR confidence,
+    preprocessing decision, GPT-4o analysis result
+  → Cleared when application closes
+
+LONG-TERM MEMORY (persistent):
+  → SQLite database (data/memory.db)
+  → Stores: every document processed, confidence score,
+    formatting decisions, user feedback, processing time
+  → Survives restarts — enables learning across sessions
+
+HOW IT HELPS:
+  Agent uses historical avg confidence to calibrate
+  how aggressively it preprocesses new documents.
+
+VISUAL:  Two-column memory diagram (RAM vs. disk/database)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 28 — AUTONOMY LEVEL
+────────────────────────────────────────────────────────────────
+HEADING:  Semi-Autonomous: The Realistic & Responsible Choice
+
+AUTONOMY SPECTRUM:
+  [Manual] ─────────────── [Semi-Auto] ─────────────── [Full Auto]
+
+  OCULAR IS HERE →  ↑
+
+WHAT THE AGENT DOES AUTONOMOUSLY:
+  ✅ Measures confidence and adapts preprocessing
+  ✅ Decides which intelligence tier to use
+  ✅ Formats and generates the document
+  ✅ Stores results and logs decisions
+
+WHAT THE HUMAN STILL CONTROLS:
+  👤 Selects the input image
+  👤 Reviews and approves the output
+  👤 Provides feedback that guides future runs
+  👤 Decides whether to use the generated document
+
+WHY SEMI?
+  Documents may contain sensitive or high-stakes content.
+  Full automation without review is ethically irresponsible.
+
+VISUAL:  Autonomy slider graphic with Ocular marker
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 29 — HUMAN-IN-THE-LOOP
+────────────────────────────────────────────────────────────────
+HEADING:  Where the Human Stays in Control
+
+HUMAN CONTROL POINTS (numbered flow):
+
+  [1] SELECT IMAGE
+      User chooses what the agent processes.
+
+  [2] REVIEW LIVE LOG
+      Agent activity is shown in real-time.
+      User sees exactly what each agent does and why.
+
+  [3] REVIEW OUTPUT
+      User opens and verifies the generated .docx
+      before using it for any purpose.
+
+  [4] GIVE FEEDBACK
+      👍 / 👎 buttons feed the learning cycle.
+      Human judgment shapes future agent behaviour.
+
+  [5] OVERRIDE
+      User can re-run with a different image
+      or manually edit the Word document at any time.
+
+VISUAL:  Numbered pipeline with human icons at control points
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 30 — ETHICAL AGENT DESIGN
+────────────────────────────────────────────────────────────────
+HEADING:  Ethics Built Into Ocular's Agent Design
+
+PRIVACY:
+  User images processed locally (OpenCV + Tesseract).
+  Only structural analysis (not raw image content) sent to API.
+
+BIAS:
+  Rule-based fallback avoids over-reliance on GPT-4o.
+  Confidence score shown so users can spot errors.
+  Works for printed AND handwritten documents.
+
+TRANSPARENCY:
+  Every agent decision is logged with timestamp and reason.
+  "View Log" button shows full explainability report.
+  Confidence score printed in the Word document header.
+
+USER CONTROL:
+  No automatic saving. No cloud sync. No telemetry.
+  The agent works for the user — not the other way around.
+
+VISUAL:  Four icon cards (lock, scale, eye, person)
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 31 — RISK ASSESSMENT
+────────────────────────────────────────────────────────────────
+HEADING:  Known Risks in Ocular Phase 2
+
+RISK MATRIX (3 risks):
+
+  Risk                  Likelihood  Impact   Mitigation
+  ─────────────────     ──────────  ──────   ──────────────────────
+  Incorrect OCR         Medium      High     Confidence score shown
+  output trusted
+  without checking
+
+  Over-automation:      Low         Medium   Human-in-the-loop kept
+  user stops reading                         at all key stages
+  output
+
+  API key exposed       Low         High     .env file, never in
+  in shared code                             version control
+
+  Misuse: extracting    Medium      High     Terms of use required;
+  copyrighted content                        user must confirm rights
+
+VISUAL:  2×2 risk matrix with dots positioned by likelihood/impact
+
+
+────────────────────────────────────────────────────────────────
+SLIDE 32 — SAFETY MECHANISMS
+────────────────────────────────────────────────────────────────
+HEADING:  How Ocular Stays Safe & Accountable
+
+LOGGING:
+  Every agent action logged with timestamp, agent name,
+  and message. Stored in /logs/ as rotating .log files.
+  Users can audit exactly what happened and why.
+
+OVERRIDE:
+  Graceful fallback — if GPT-4o API fails, rule-based
+  analysis runs automatically. System never crashes silently.
+  User is always informed of which mode was used.
+
+EXPLAINABILITY:
+  "View Log" button renders the full decision trail.
+  Word document header shows confidence score.
+  Agent labels its own output: "GPT-4o" or "Fallback (rules)".
+
+FINAL SAFETY PRINCIPLE:
+  Ocular is designed so that a user who does not trust
+  the AI output can always verify, override, or ignore it.
+  The agent advises — the human decides.
+
+VISUAL:  Three safety pillars (log/shield/eye icons), closing statement
+
+
+================================================================
+END OF SLIDE CONTENT — 32 SLIDES TOTAL
+================================================================
