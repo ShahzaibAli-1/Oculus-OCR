@@ -242,7 +242,7 @@ with col_up:
 with col_prev:
     if uploaded:
         st.markdown('<p class="result-header">Preview</p>', unsafe_allow_html=True)
-        st.image(uploaded, use_container_width=True)
+        st.image(uploaded, width="stretch")
 
 
 # ── Process ───────────────────────────────────────────────────────────────────
