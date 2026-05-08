@@ -10,7 +10,11 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from dotenv import load_dotenv
 import streamlit as st
+
+# Load .env BEFORE anything else reads os.getenv
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 # ── Page config (must be first Streamlit call) ────────────────────────────────
 st.set_page_config(
@@ -132,15 +136,16 @@ st.markdown("""
 # ── Environment setup ─────────────────────────────────────────────────────────
 # 1. API key — Streamlit Cloud secrets take priority, then .env / system env
 def _get_api_key() -> str:
+    # Try Streamlit Cloud secrets first
     try:
-        return st.secrets["OPENAIAPIKEY"]
+        v = st.secrets["OPENAIAPIKEY"]
+        if v:
+            return v.strip().strip('"').strip("'")
     except Exception:
         pass
-    try:
-        return st.secrets.get("OPENAIAPIKEY", "")
-    except Exception:
-        pass
-    return os.getenv("OPENAIAPIKEY", "")
+    # Fall back to environment (already loaded from .env via load_dotenv above)
+    v = os.getenv("OPENAIAPIKEY", "")
+    return v.strip().strip('"').strip("'")
 
 api_key = _get_api_key()
 if api_key:
@@ -237,7 +242,7 @@ with col_up:
 with col_prev:
     if uploaded:
         st.markdown('<p class="result-header">Preview</p>', unsafe_allow_html=True)
-        st.image(uploaded, use_column_width=True)
+        st.image(uploaded, use_container_width=True)
 
 
 # ── Process ───────────────────────────────────────────────────────────────────
@@ -303,6 +308,31 @@ if uploaded:
             m2.metric("AI Confidence",     f"{result['ai_confidence']*100:.0f}%")
             m3.metric("Paragraphs",        result["paragraphs"])
             m4.metric("Processing Time",   f"{result['processing_time']:.1f}s")
+
+            # ── Extracted text preview ────────────────────────────────────
+            st.markdown('<p class="result-header">Extracted Content Preview</p>', unsafe_allow_html=True)
+            try:
+                from docx import Document as DocxDocument
+                doc = DocxDocument(output_path)
+                preview_html = "<div style='background:#080808;border:1px solid #1a1a1a;border-radius:8px;padding:24px 28px;font-family:Georgia,serif;max-height:420px;overflow-y:auto'>"
+                for para in doc.paragraphs:
+                    text = para.text.strip()
+                    if not text:
+                        preview_html += "<div style='height:10px'></div>"
+                        continue
+                    style = para.style.name if para.style else ""
+                    if "Heading 1" in style:
+                        preview_html += f"<h2 style='color:#fff;font-weight:300;font-size:1.4rem;margin:16px 0 6px;border-bottom:1px solid #1a1a1a;padding-bottom:8px'>{text}</h2>"
+                    elif "Heading 2" in style:
+                        preview_html += f"<h3 style='color:#ddd;font-weight:400;font-size:1.1rem;margin:12px 0 4px'>{text}</h3>"
+                    elif "Heading 3" in style:
+                        preview_html += f"<h4 style='color:#00e5cc;font-weight:400;font-size:.95rem;margin:10px 0 4px;letter-spacing:.04em'>{text}</h4>"
+                    else:
+                        preview_html += f"<p style='color:#888;font-size:.88rem;line-height:1.75;margin:4px 0'>{text}</p>"
+                preview_html += "</div>"
+                st.markdown(preview_html, unsafe_allow_html=True)
+            except Exception as prev_err:
+                st.caption(f"Preview unavailable: {prev_err}")
 
             # ── Decision log ──────────────────────────────────────────────
             with st.expander("📋 Agent Decision Log", expanded=False):
